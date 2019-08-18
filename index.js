@@ -21,8 +21,11 @@ app.use(bodyParser({ multipart: true }));
 app.use(cors());
 
 // set static folder
+app.use(static("."));
 const staticPath = "./static";
+const uploads = "./uploads";
 app.use(static(path.join(__dirname, staticPath)));
+app.use(static(path.join(__dirname, uploads)));
 
 // controller
 
