@@ -27,13 +27,16 @@ const uploads = "./uploads";
 app.use(static(path.join(__dirname, staticPath)));
 app.use(static(path.join(__dirname, uploads)));
 
-// controller
+/**
+ * @Route POST /add
+ * @POST_content { name: String, avatar: file, age: String | number }
+ */
+router.post("/add", userController.addUser);
 
 /**
- * @Desc router
+ * @Route PUT /edit
+ * @PUT_content { name: String, avatar: file, age: String | number }
  */
-
-router.post("/add", userController.addUser);
 router.put("/edit", userController.editUser);
 router.get("/get", userController.getUser);
 
