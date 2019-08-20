@@ -49,10 +49,13 @@ exports.addUser = async function(ctx) {
 
 exports.editUser = async function(ctx) {
   try {
-    const { name, age } = ctx.request.body;
+    const idUser = ctx.params.id;
+    const { age } = ctx.request.body;
     // get info user
-    let user = await User.findOne({ name });
-    if (!user) throw { name: "Không tồn tại user" };
+    let user = await User.findById(idUser);
+    if (user === undefined) {
+      throw { name: "Không tồn tại user" };
+    }
 
     // delete file on server
     const avatarFile = ctx.request.files.avatar;
@@ -64,13 +67,13 @@ exports.editUser = async function(ctx) {
 
       // add user to database
       let _n = {
-        name,
+        name: user.name,
         age,
         avatar: randomName
       };
 
       let editUserDone = await User.findOneAndUpdate(
-        { name },
+        { _id: idUser },
         { $set: _n },
         { new: true }
       );
@@ -86,6 +89,17 @@ exports.editUser = async function(ctx) {
 exports.getUser = async function(ctx) {
   try {
     let user = await User.find();
+    ctx.body = { user };
+  } catch (err) {
+    ctx.response.status = 400;
+    ctx.body = err;
+  }
+};
+
+exports.getUserById = async function(ctx) {
+  try {
+    const id = ctx.params.id;
+    let user = await User.findById(id);
     ctx.body = { user };
   } catch (err) {
     ctx.response.status = 400;

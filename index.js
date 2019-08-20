@@ -37,8 +37,9 @@ router.post("/add", userController.addUser);
  * @Route PUT /edit
  * @PUT_content { name: String, avatar: file, age: String | number }
  */
-router.put("/edit", userController.editUser);
+router.put("/edit/:id", userController.editUser);
 router.get("/get", userController.getUser);
+router.get("/user/:id", userController.getUserById);
 
 app.use(router.routes()).use(router.allowedMethods());
 
